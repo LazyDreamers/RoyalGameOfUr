@@ -1,11 +1,11 @@
 import React from "react";
 import "./styles.css";
 
-export default function App() {
-  return (
-    <div className="App">
-      <h1>Hello CodeSandbox</h1>
-      <h2>DZIAŁA!</h2>
-    </div>
-  );
-}
+const App = () => (
+  <div className="wrapper">
+    <h1 className="mainHeader">Hello, World</h1>
+    <h2 className="secondaryHeader">Zmiany Zmiany</h2>
+  </div>
+);
+
+export default App;
