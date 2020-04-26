@@ -1,2 +1,0 @@
-# GameOfUr
-Created with CodeSandbox
