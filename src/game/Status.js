@@ -1,8 +1,8 @@
 import React from "react";
 
-const Status = ({ player }) => (
+const Status = props => (
   <h4 className="Status">
-    {player ? `Now player ${player}.` : "Let's begin!"}
+    {props.player ? `Now player ${props.player}.` : "Let's begin!"}
   </h4>
 );
 

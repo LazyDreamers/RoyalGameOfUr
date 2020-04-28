@@ -12,12 +12,13 @@ export default class Tile extends React.Component {
   }
 
   description() {
-    return `Pole ${this.uuid}`;
+    return `Pole jjjj ${this.uuid}`;
   }
 
   onClickAction(event) {
-    event.preventDefault();
+    event.preventDefault(); //
     // console.log(`Kliknięto w pole:`, this._uuid);
+
     console.log(`onClickAction: ${this.description()}`);
     console.debug(`onClickAction:`, this);
   }
