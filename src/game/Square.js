@@ -5,11 +5,11 @@ const Square = ({ position, value, player, zmiana }) => (
   <button
     className="body"
     onClick={() => {
-      console.log({ position, value, player });
-      zmiana(position);
+      console.log("Square.js ", { position, value, player });
+      zmiana(position, value, player);
     }}
   >
-    {player}
+    {value}, {player}
   </button>
 );
 
