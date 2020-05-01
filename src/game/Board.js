@@ -2,33 +2,36 @@ import React from "react";
 import Square from "./Square";
 
 const squares = [
-  { position: 0, value: 7, player: 1, aktywny: false },
-  { position: 1, value: 0, player: 0, aktywny: false },
-  { position: 2, value: 0, player: 0, aktywny: false },
-  { position: 3, value: 0, player: 0, aktywny: false },
-  { position: 4, value: 0, player: 0, aktywny: true },
-  { position: 5, value: 0, player: 0, aktywny: false },
-  { position: 6, value: 0, player: 0, aktywny: true },
-  { position: 7, value: 0, player: 0, aktywny: false },
-  { position: 8, value: 0, player: 0, aktywny: false },
-  { position: 9, value: 0, player: 0, aktywny: false },
-  { position: 10, value: 0, player: 0, aktywny: false },
-  { position: 11, value: 0, player: 0, aktywny: false },
-  { position: 12, value: 0, player: 0, aktywny: false }
+  { sid: 14, position: 0, value: 7, player: 1, aktywny: false },
+  { sid: 13, position: 1, value: 0, player: 0, aktywny: false },
+  { sid: 12, position: 2, value: 0, player: 0, aktywny: false },
+  { sid: 11, position: 3, value: 0, player: 0, aktywny: false },
+  { sid: 21, position: 4, value: 0, player: 0, aktywny: true },
+  { sid: 22, position: 5, value: 0, player: 0, aktywny: false },
+  { sid: 23, position: 6, value: 0, player: 0, aktywny: true },
+  { sid: 24, position: 7, value: 0, player: 0, aktywny: false },
+  { sid: 25, position: 8, value: 0, player: 0, aktywny: false },
+  { sid: 26, position: 9, value: 0, player: 0, aktywny: false },
+  { sid: 27, position: 10, value: 0, player: 0, aktywny: false },
+  { sid: 28, position: 11, value: 0, player: 0, aktywny: false },
+  { sid: 18, position: 12, value: 0, player: 0, aktywny: false }
 ];
 
 class Board extends React.Component {
   state = {
     squares: [...squares]
   };
-  tmpPromise = null;
+  receipt = {
+    resolve: value => {},
+    reject: reason => {}
+  };
 
   // moveFn = () => {
   //     console.log(this.state.squares[]);
   //      console.log("cns")
   // }
 
-  startGameLoop = () => {
+  startGameLoop = async () => {
     console.log(
       `START GRY :tada:`,
       this.state.squares[0],
@@ -52,7 +55,7 @@ class Board extends React.Component {
         continue;
       }
 
-      const pole = this.czekaj_na_wskazanie_pola(aktywnePola);
+      const pole = await this.czekaj_na_wskazanie_pola(aktywnePola);
 
       this.wykonaj_ruch(pole);
 
@@ -98,6 +101,17 @@ class Board extends React.Component {
   };
 
   sprawdza_dostępne_ruchy_i_aktywuj_pola = iloscOczek => {
+    const squares = this.state.squares.slice();
+
+    for (let i = 0; i < squares.length; i++) {
+      if (!squares[i].value <= 0) {
+        if (!squares[i + 2].player === 1) {
+          squares[i].aktywny = true;
+        }
+      }
+    }
+
+    this.setState({ squares: squares });
     console.log(
       `sprawdza dostępne ruchy i ustawia aktywne pola, iloscOczek:`,
       iloscOczek
@@ -110,13 +124,22 @@ class Board extends React.Component {
     return true;
   };
 
-  czekaj_na_wskazanie_pola = pola => {
+  czekaj_na_wskazanie_pola = async pola => {
     console.log(`czekaj_na_wskazanie_pola`);
-    return pola[0];
+
+    const ppp = new Promise((resolve, reject) => {
+      console.log(`włąśnie zrobił się nowy PROMISE`, this);
+      this.receipt = { resolve, reject };
+    });
+
+    console.log(`ciekawe czy new Promise blokuje kod? hm..`);
+
+    // return pola[0];
+    return ppp;
   };
 
-  wykonaj_ruch = () => {
-    console.log(`wykonaj ruch`);
+  wykonaj_ruch = pole => {
+    console.log(`wykonaj ruch do: `, pole);
   };
 
   czy_wygrał_gracz = player => {
@@ -160,7 +183,15 @@ class Board extends React.Component {
       console.log(`false`, value);
     }
 
-    //  console.log("użyto pola numer: ", position)
+    console.log("DOCZEKAŁ użyto pola numer: ", position);
+
+    if (this.receipt) {
+      const potwierdzenie = this.receipt;
+      this.receipt = null;
+      potwierdzenie.resolve(123456);
+    } else {
+      console.error(" !  ojjojoj, brakuje paragonu");
+    }
   };
 
   render() {
