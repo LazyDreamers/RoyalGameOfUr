@@ -1,5 +1,23 @@
 .body {
   color: brown;
-  height: 30px;
+  height: 50px;
   width: 60px;
+  display: inline-block;
+}
+
+.bodyInactive {
+  color: brown;
+  height: 50px;
+  width: 60px;
+  display: inline-block;
+  pointer-events: none;
+}
+
+.bodyActive {
+  background-color: lightgreen;
+  color: brown;
+  height: 50px;
+  width: 60px;
+  display: inline-block;
+  pointer-events: all;
 }

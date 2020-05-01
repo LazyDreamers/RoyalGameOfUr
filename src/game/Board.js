@@ -2,25 +2,26 @@ import React from "react";
 import Square from "./Square";
 
 const squares = [
-  { position: 0, value: 7, player: 1 },
-  { position: 1, value: 0, player: 0 },
-  { position: 2, value: 0, player: 0 },
-  { position: 3, value: 0, player: 0 },
-  { position: 4, value: 0, player: 0 },
-  { position: 5, value: 0, player: 0 },
-  { position: 6, value: 0, player: 0 },
-  { position: 7, value: 0, player: 0 },
-  { position: 8, value: 0, player: 0 },
-  { position: 9, value: 0, player: 0 },
-  { position: 10, value: 0, player: 0 },
-  { position: 11, value: 0, player: 0 },
-  { position: 12, value: 0, player: 0 }
+  { position: 0, value: 7, player: 1, aktywny: false },
+  { position: 1, value: 0, player: 0, aktywny: false },
+  { position: 2, value: 0, player: 0, aktywny: false },
+  { position: 3, value: 0, player: 0, aktywny: false },
+  { position: 4, value: 0, player: 0, aktywny: true },
+  { position: 5, value: 0, player: 0, aktywny: false },
+  { position: 6, value: 0, player: 0, aktywny: true },
+  { position: 7, value: 0, player: 0, aktywny: false },
+  { position: 8, value: 0, player: 0, aktywny: false },
+  { position: 9, value: 0, player: 0, aktywny: false },
+  { position: 10, value: 0, player: 0, aktywny: false },
+  { position: 11, value: 0, player: 0, aktywny: false },
+  { position: 12, value: 0, player: 0, aktywny: false }
 ];
 
 class Board extends React.Component {
   state = {
     squares: [...squares]
   };
+  tmpPromise = null;
 
   // moveFn = () => {
   //     console.log(this.state.squares[]);
@@ -28,7 +29,11 @@ class Board extends React.Component {
   // }
 
   startGameLoop = () => {
-    console.log(`START GRY :tada:`, this);
+    console.log(
+      `START GRY :tada:`,
+      this.state.squares[0],
+      this.state.squares[12]
+    );
 
     //tu zaczynamy gre
 
@@ -72,10 +77,22 @@ class Board extends React.Component {
   };
 
   reset_stanu_mety_i_startu_i_dezaktywacja_pól = () => {
+    const squares = this.state.squares.slice();
+
+    for (let i = 0; i < squares.length; i++) {
+      squares[i].aktywny = false;
+    }
+    squares[0].player = 1;
+    squares[0].aktywny = true;
+    squares[12].player = 0;
+
+    this.setState({ squares: squares });
+
     console.log(`reset stanu mety i startu i dezaktywacja pól`);
   };
 
   rzucamy_kostką = () => {
+    console.log(this.state.squares);
     console.log(`rzuca kostką`);
     return 2;
   };

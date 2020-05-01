@@ -1,9 +1,9 @@
 import React from "react";
 import "./Square.scss";
 
-const Square = ({ position, value, player, zmiana }) => (
+const Square = ({ position, aktywny, value, player, zmiana }) => (
   <button
-    className="body"
+    className={aktywny ? "bodyActive" : "bodyInactive"}
     onClick={() => {
       console.log("Square.js ", { position, value, player });
       zmiana(position, value, player);
@@ -13,6 +13,6 @@ const Square = ({ position, value, player, zmiana }) => (
   </button>
 );
 
-// onClick={() => console.log({position, value, player})}
+// onClick={() => console.log({position, value, player})
 
 export default Square;
