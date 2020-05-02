@@ -14,10 +14,27 @@
 }
 
 .bodyActive {
-  background-color: lightgreen;
+  background-color: lime;
   color: brown;
   height: 50px;
   width: 60px;
   display: inline-block;
   pointer-events: all;
+  animation: wobble 0.5s infinite;
+  animation-direction: alternate-reverse;
+  animation-timing-function: ease-in-out;
+
+}
+
+@keyframes wobble {
+  from {
+    -ms-transform: rotate(-8deg); /* IE 9 */
+    transform: rotate(-8deg); /* Standard syntax */
+    background-color: rgb(153, 236, 104);
+}
+  to {
+    -ms-transform: rotate(8deg); /* IE 9 */
+    transform: rotate(8deg); /* Standard syntax */
+    background-color: rgb(107, 240, 107);
+  }
 }

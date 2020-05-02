@@ -3,19 +3,19 @@ import Square from "./Square";
 
 function MakeDefaultsSquares() {
   return [
-    { sid: 14, position: 0, value: 4, player: 0, aktywny: false },
-    { sid: 13, position: 1, value: 0, player: 0, aktywny: false },
-    { sid: 12, position: 2, value: 0, player: 0, aktywny: false },
-    { sid: 11, position: 3, value: 0, player: 0, aktywny: false },
-    { sid: 21, position: 4, value: 0, player: 0, aktywny: false },
-    { sid: 22, position: 5, value: 0, player: 0, aktywny: false },
-    { sid: 23, position: 6, value: 0, player: 0, aktywny: false },
-    { sid: 24, position: 7, value: 0, player: 0, aktywny: false },
-    { sid: 25, position: 8, value: 0, player: 0, aktywny: false },
-    { sid: 26, position: 9, value: 0, player: 0, aktywny: false }
-    // { sid: 27, position: 10, value: 0, player: 0, aktywny: false },
-    // { sid: 28, position: 11, value: 0, player: 0, aktywny: false },
-    // { sid: 18, position: 12, value: 0, player: 0, aktywny: false },
+    { sid: 14, position: 0, value: 3, player: 0, aktywny: false, extra: false },
+    { sid: 13, position: 1, value: 0, player: 0, aktywny: false, extra: false },
+    { sid: 12, position: 2, value: 0, player: 0, aktywny: false, extra: false },
+    { sid: 11, position: 3, value: 0, player: 0, aktywny: false, extra: false },
+    { sid: 21, position: 4, value: 0, player: 0, aktywny: false, extra: false },
+    { sid: 22, position: 5, value: 0, player: 0, aktywny: false, extra: false },
+    { sid: 23, position: 6, value: 0, player: 0, aktywny: false, extra: false },
+    { sid: 24, position: 7, value: 0, player: 0, aktywny: false, extra: false },
+    { sid: 25, position: 8, value: 0, player: 0, aktywny: false, extra: false },
+    { sid: 26, position: 9, value: 0, player: 0, aktywny: false, extra: false }
+    // { sid: 27, position: 10, value: 0, player: 0, aktywny: false, extra: false }
+    // { sid: 28, position: 11, value: 0, player: 0, aktywny: false, extra: false },
+    // { sid: 18, position: 12, value: 0, player: 0, aktywny: false, extra: false },
   ];
 }
 
@@ -44,7 +44,7 @@ class Board extends React.Component {
 
     while (true) {
       // początek tury
-      let player = this.pobierz_pierwszego_gracza();
+      let player = this.aktualny_gracz();
       this.reset_stanu_mety_i_startu_i_dezaktywacja_pól(player);
       const iloscOczek = this.rzucamy_kostką();
       this.sprawdza_dostępne_ruchy_i_aktywuj_pola(iloscOczek, player);
@@ -75,9 +75,14 @@ class Board extends React.Component {
     console.log(`Gra się zakończyła, wygrał player: `, "player");
   };
 
-  pobierz_pierwszego_gracza = () => {
+  aktualny_gracz = () => {
     console.log(`pobierz pierwszego gracza`);
     return 2;
+  };
+
+  next_player = player => {
+    console.log(`Następny gracz:`, 1);
+    return 1;
   };
 
   reset_stanu_mety_i_startu_i_dezaktywacja_pól = player => {
@@ -95,7 +100,6 @@ class Board extends React.Component {
   };
 
   rzucamy_kostką = () => {
-    console.log(this.state.squares);
     console.log(`rzuca kostką`);
     return 3;
   };
@@ -112,7 +116,6 @@ class Board extends React.Component {
         if ([i + iloscOczek] <= squares.length) {
           if (squares[i + iloscOczek].player !== player) {
             squares[i].aktywny = true;
-            console.log([i + iloscOczek]);
           }
         } else {
           break;
@@ -125,9 +128,11 @@ class Board extends React.Component {
   };
 
   czy_jest_jakiekolwiek_aktywne_pole = iloscOczek => {
-    console.log(this.state.squares);
-    console.log(`czy jest aktywne pole`);
-    console.log(`iloscOczek:`, iloscOczek);
+    const tab = this.state.squares;
+    const isActive = tab.some(function(el) {
+      return el.aktywny === true;
+    });
+    console.log("Jest aktywne pole", isActive); //true
     return true;
   };
 
@@ -135,20 +140,18 @@ class Board extends React.Component {
     console.log(`czekaj_na_wskazanie_pola`);
 
     const ppp = new Promise((resolve, reject) => {
-      console.log(`włąśnie zrobił się nowy PROMISE`, this);
+      console.log(`włąśnie zrobił się nowy PROMISE`, this.receipt);
       this.receipt = { resolve, reject };
     });
 
-    console.log(`ciekawe czy new Promise blokuje kod? hm..`);
-    console.log(`iloscOczek:`, this.iloscOczek);
+    // console.log(`ciekawe czy new Promise blokuje kod? hm..`);
 
-    // return pola[0];
     return ppp;
   };
 
   wykonaj_ruch = (position, iloscOczek, player) => {
-    console.log(`wykonaj ruch otrzymał: `, position);
-    console.log(`Fn wykonaj-ruch: iloscOczek:`, iloscOczek);
+    console.log(`Fn wykonuje ruch z pola: `, position);
+    console.log(`Fn wykonuje ruch o iloscOczek:`, iloscOczek);
     const squares = this.state.squares.slice();
     const sourceSquare = squares[position];
     const targetSquare = squares[position + iloscOczek];
@@ -163,9 +166,7 @@ class Board extends React.Component {
     sourceSquare.aktywny = false;
 
     this.setState({ squares: squares });
-    console.log(`Board.js did wykonaj_ruch`, this.state.squares[position]);
-    //   console.log(`true 2`);
-    console.log("DOCZEKAŁ użyto pola numer: ", position);
+    // console.log("DOCZEKAŁ użyto pola numer: ", position);
   };
 
   czy_wygrał_gracz = player => {
