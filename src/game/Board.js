@@ -1,35 +1,37 @@
 import React from "react";
 import Square from "./Square";
 
-const squares = [
-  { sid: 14, position: 0, value: 7, player: 1, aktywny: false },
-  { sid: 13, position: 1, value: 0, player: 0, aktywny: false },
-  { sid: 12, position: 2, value: 0, player: 0, aktywny: false },
-  { sid: 11, position: 3, value: 0, player: 0, aktywny: false },
-  { sid: 21, position: 4, value: 0, player: 0, aktywny: true },
-  { sid: 22, position: 5, value: 0, player: 0, aktywny: false },
-  { sid: 23, position: 6, value: 0, player: 0, aktywny: true },
-  { sid: 24, position: 7, value: 0, player: 0, aktywny: false },
-  { sid: 25, position: 8, value: 0, player: 0, aktywny: false },
-  { sid: 26, position: 9, value: 0, player: 0, aktywny: false },
-  { sid: 27, position: 10, value: 0, player: 0, aktywny: false },
-  { sid: 28, position: 11, value: 0, player: 0, aktywny: false },
-  { sid: 18, position: 12, value: 0, player: 0, aktywny: false }
-];
+function MakeDefaultsSquares() {
+  return [
+    { sid: 14, position: 0, value: 4, player: 0, aktywny: false },
+    { sid: 13, position: 1, value: 0, player: 0, aktywny: false },
+    { sid: 12, position: 2, value: 0, player: 0, aktywny: false },
+    { sid: 11, position: 3, value: 0, player: 0, aktywny: false },
+    { sid: 21, position: 4, value: 0, player: 0, aktywny: false },
+    { sid: 22, position: 5, value: 0, player: 0, aktywny: false },
+    { sid: 23, position: 6, value: 0, player: 0, aktywny: false },
+    { sid: 24, position: 7, value: 0, player: 0, aktywny: false },
+    { sid: 25, position: 8, value: 0, player: 0, aktywny: false },
+    { sid: 26, position: 9, value: 0, player: 0, aktywny: false }
+    // { sid: 27, position: 10, value: 0, player: 0, aktywny: false },
+    // { sid: 28, position: 11, value: 0, player: 0, aktywny: false },
+    // { sid: 18, position: 12, value: 0, player: 0, aktywny: false },
+  ];
+}
+
+function WonArgument() {
+  const meta = MakeDefaultsSquares();
+  return meta[0].value;
+}
 
 class Board extends React.Component {
   state = {
-    squares: [...squares]
+    squares: MakeDefaultsSquares()
   };
   receipt = {
     resolve: value => {},
     reject: reason => {}
   };
-
-  // moveFn = () => {
-  //     console.log(this.state.squares[]);
-  //      console.log("cns")
-  // }
 
   startGameLoop = async () => {
     console.log(
@@ -40,24 +42,23 @@ class Board extends React.Component {
 
     //tu zaczynamy gre
 
-    let player = this.pobierz_pierwszego_gracza();
-
     while (true) {
       // początek tury
-      this.reset_stanu_mety_i_startu_i_dezaktywacja_pól();
+      let player = this.pobierz_pierwszego_gracza();
+      this.reset_stanu_mety_i_startu_i_dezaktywacja_pól(player);
       const iloscOczek = this.rzucamy_kostką();
-      this.sprawdza_dostępne_ruchy_i_aktywuj_pola(iloscOczek);
+      this.sprawdza_dostępne_ruchy_i_aktywuj_pola(iloscOczek, player);
       const aktywnePola = [];
 
-      if (!this.czy_jest_jakiekolwiek_aktywne_pole()) {
+      if (!this.czy_jest_jakiekolwiek_aktywne_pole(iloscOczek)) {
         player = this.next_player(player);
         this.koniec_tury();
         continue;
       }
 
-      const pole = await this.czekaj_na_wskazanie_pola(aktywnePola);
+      const position = await this.czekaj_na_wskazanie_pola(aktywnePola);
 
-      this.wykonaj_ruch(pole);
+      this.wykonaj_ruch(position, iloscOczek, player);
 
       if (this.czy_wygrał_gracz(player)) {
         break;
@@ -71,7 +72,7 @@ class Board extends React.Component {
     }
     //
     this.koniec_gry();
-    console.log(`Gra się zakończyła, wygrał player: `, player);
+    console.log(`Gra się zakończyła, wygrał player: `, "player");
   };
 
   pobierz_pierwszego_gracza = () => {
@@ -79,15 +80,14 @@ class Board extends React.Component {
     return 2;
   };
 
-  reset_stanu_mety_i_startu_i_dezaktywacja_pól = () => {
+  reset_stanu_mety_i_startu_i_dezaktywacja_pól = player => {
     const squares = this.state.squares.slice();
 
     for (let i = 0; i < squares.length; i++) {
       squares[i].aktywny = false;
     }
-    squares[0].player = 1;
-    squares[0].aktywny = true;
-    squares[12].player = 0;
+    squares[0].player = player;
+    squares[squares.length - 1].player = 0;
 
     this.setState({ squares: squares });
 
@@ -97,30 +97,37 @@ class Board extends React.Component {
   rzucamy_kostką = () => {
     console.log(this.state.squares);
     console.log(`rzuca kostką`);
-    return 2;
+    return 3;
   };
 
-  sprawdza_dostępne_ruchy_i_aktywuj_pola = iloscOczek => {
+  sprawdza_dostępne_ruchy_i_aktywuj_pola = (iloscOczek, player) => {
+    console.log(
+      `sprawdza dostępne ruchy i ustawia aktywne pola, iloscOczek:`,
+      iloscOczek
+    );
     const squares = this.state.squares.slice();
 
     for (let i = 0; i < squares.length; i++) {
       if (!squares[i].value <= 0) {
-        if (!squares[i + 2].player === 1) {
-          squares[i].aktywny = true;
+        if ([i + iloscOczek] <= squares.length) {
+          if (squares[i + iloscOczek].player !== player) {
+            squares[i].aktywny = true;
+            console.log([i + iloscOczek]);
+          }
+        } else {
+          break;
         }
       }
     }
 
     this.setState({ squares: squares });
-    console.log(
-      `sprawdza dostępne ruchy i ustawia aktywne pola, iloscOczek:`,
-      iloscOczek
-    );
     return [];
   };
 
-  czy_jest_jakiekolwiek_aktywne_pole = () => {
+  czy_jest_jakiekolwiek_aktywne_pole = iloscOczek => {
+    console.log(this.state.squares);
     console.log(`czy jest aktywne pole`);
+    console.log(`iloscOczek:`, iloscOczek);
     return true;
   };
 
@@ -133,18 +140,41 @@ class Board extends React.Component {
     });
 
     console.log(`ciekawe czy new Promise blokuje kod? hm..`);
+    console.log(`iloscOczek:`, this.iloscOczek);
 
     // return pola[0];
     return ppp;
   };
 
-  wykonaj_ruch = pole => {
-    console.log(`wykonaj ruch do: `, pole);
+  wykonaj_ruch = (position, iloscOczek, player) => {
+    console.log(`wykonaj ruch otrzymał: `, position);
+    console.log(`Fn wykonaj-ruch: iloscOczek:`, iloscOczek);
+    const squares = this.state.squares.slice();
+    const sourceSquare = squares[position];
+    const targetSquare = squares[position + iloscOczek];
+
+    sourceSquare.player = 0;
+    targetSquare.player = player;
+
+    sourceSquare.value = sourceSquare.value - 1;
+    targetSquare.value = targetSquare.value + 1;
+    sourceSquare.player = 0;
+    targetSquare.player = player;
+    sourceSquare.aktywny = false;
+
+    this.setState({ squares: squares });
+    console.log(`Board.js did wykonaj_ruch`, this.state.squares[position]);
+    //   console.log(`true 2`);
+    console.log("DOCZEKAŁ użyto pola numer: ", position);
   };
 
   czy_wygrał_gracz = player => {
-    console.log(`czy wygrał gracz`);
-    return true;
+    const squares = this.state.squares;
+    if (squares[squares.length - 1].value === WonArgument()) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   sprawdz_extra_targetSquare = () => {
@@ -152,8 +182,14 @@ class Board extends React.Component {
     return true;
   };
 
+  koniec_tury = () => {
+    console.log(`koniec tury`);
+  };
+
   koniec_gry = () => {
     console.log(`koniec gry`);
+    alert("PRZESZEDŁEŚ CAŁA GRĘ!! GRATULUJĘ!!");
+    this.setState({ squares: MakeDefaultsSquares() });
   };
 
   ///
@@ -161,34 +197,10 @@ class Board extends React.Component {
     "funkcja sprawdzająca";
   };
 
-  propekFn = (position, value) => {
-    const squares = this.state.squares.slice();
-    if (value > 0) {
-      /// nmn n n
-      const sourceSquare = squares[position];
-      const targetSquare = squares[position + 1 /*o tutaj mona kostke*/];
-
-      sourceSquare.player = 0;
-      targetSquare.player = 1;
-
-      squares[position].value = value - 1;
-      squares[position + 1].value = squares[position + 1].value + 1;
-      squares[position].player = 0;
-      squares[position + 1].player = 1;
-
-      this.setState({ squares: squares });
-      console.log(`Board.js did propekFn`, this.state.squares[position]);
-      //   console.log(`true 2`);
-    } else {
-      console.log(`false`, value);
-    }
-
-    console.log("DOCZEKAŁ użyto pola numer: ", position);
-
+  handleClick = (position, value) => {
     if (this.receipt) {
       const potwierdzenie = this.receipt;
-      this.receipt = null;
-      potwierdzenie.resolve(123456);
+      potwierdzenie.resolve(position);
     } else {
       console.error(" !  ojjojoj, brakuje paragonu");
     }
@@ -201,12 +213,7 @@ class Board extends React.Component {
 
         <ul className="board-row">
           {this.state.squares.map(item => (
-            <Square
-              key={item.position}
-              {...item}
-              zmiana={this.propekFn}
-              jestAktywny={this.wykonaj_ruch}
-            />
+            <Square key={item.position} {...item} zmiana={this.handleClick} />
           ))}
         </ul>
       </>
