@@ -1,7 +1,7 @@
 import React from "react";
 import "./Square.scss";
 
-const Square = ({ position, aktywny, value, player, zmiana }) => (
+const Square = ({ position, aktywny, value, player, p1id, p2id, zmiana }) => (
   <button
     className={aktywny ? "bodyActive" : "bodyInactive"}
     onClick={() => {
@@ -9,7 +9,7 @@ const Square = ({ position, aktywny, value, player, zmiana }) => (
       zmiana(position, value, player);
     }}
   >
-    {value}, {player}
+    {p1id} {p2id}
   </button>
 );
 

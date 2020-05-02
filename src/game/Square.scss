@@ -2,14 +2,15 @@
   color: brown;
   height: 50px;
   width: 60px;
-  display: inline-block;
+  // display: block;
+  
 }
 
 .bodyInactive {
   color: brown;
   height: 50px;
   width: 60px;
-  display: inline-block;
+  // display: inline-block;
   pointer-events: none;
 }
 
@@ -18,7 +19,7 @@
   color: brown;
   height: 50px;
   width: 60px;
-  display: inline-block;
+  // display: inline-block;
   pointer-events: all;
   animation: wobble 0.5s infinite;
   animation-direction: alternate-reverse;
@@ -28,13 +29,13 @@
 
 @keyframes wobble {
   from {
-    -ms-transform: rotate(-8deg); /* IE 9 */
-    transform: rotate(-8deg); /* Standard syntax */
+    -ms-transform: rotate(-4deg); /* IE 9 */
+    transform: rotate(-4deg); /* Standard syntax */
     background-color: rgb(153, 236, 104);
 }
   to {
-    -ms-transform: rotate(8deg); /* IE 9 */
-    transform: rotate(8deg); /* Standard syntax */
+    -ms-transform: rotate(4deg); /* IE 9 */
+    transform: rotate(4deg); /* Standard syntax */
     background-color: rgb(107, 240, 107);
   }
 }
