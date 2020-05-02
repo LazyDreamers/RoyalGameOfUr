@@ -3,7 +3,6 @@
   height: 50px;
   width: 60px;
   // display: block;
-  
 }
 
 .bodyInactive {
@@ -24,7 +23,6 @@
   animation: wobble 0.5s infinite;
   animation-direction: alternate-reverse;
   animation-timing-function: ease-in-out;
-
 }
 
 @keyframes wobble {
@@ -32,7 +30,7 @@
     -ms-transform: rotate(-4deg); /* IE 9 */
     transform: rotate(-4deg); /* Standard syntax */
     background-color: rgb(153, 236, 104);
-}
+  }
   to {
     -ms-transform: rotate(4deg); /* IE 9 */
     transform: rotate(4deg); /* Standard syntax */
