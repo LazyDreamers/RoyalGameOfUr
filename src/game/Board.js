@@ -12,7 +12,7 @@ function MakeDefaultsSquares() {
     { sid: 23, position: 6, value: 0, player: 0, aktywny: false, extra: false },
     { sid: 24, position: 7, value: 0, player: 0, aktywny: false, extra: false },
     { sid: 25, position: 8, value: 0, player: 0, aktywny: false, extra: false },
-    { sid: 26, position: 9, value: 0, player: 0, aktywny: false, extra: false }
+    { sid: 26, position: 9, value: 0, player: 0, aktywny: false, extra: false },
     // { sid: 27, position: 10, value: 0, player: 0, aktywny: false, extra: false }
     // { sid: 28, position: 11, value: 0, player: 0, aktywny: false, extra: false },
     // { sid: 18, position: 12, value: 0, player: 0, aktywny: false, extra: false },
@@ -26,11 +26,11 @@ function WonArgument() {
 
 class Board extends React.Component {
   state = {
-    squares: MakeDefaultsSquares()
+    squares: MakeDefaultsSquares(),
   };
   receipt = {
-    resolve: value => {},
-    reject: reason => {}
+    resolve: (value) => {},
+    reject: (reason) => {},
   };
 
   startGameLoop = async () => {
@@ -80,12 +80,12 @@ class Board extends React.Component {
     return 2;
   };
 
-  next_player = player => {
+  next_player = (player) => {
     console.log(`Następny gracz:`, 1);
     return 1;
   };
 
-  reset_stanu_mety_i_startu_i_dezaktywacja_pól = player => {
+  reset_stanu_mety_i_startu_i_dezaktywacja_pól = (player) => {
     const squares = this.state.squares.slice();
 
     for (let i = 0; i < squares.length; i++) {
@@ -127,16 +127,16 @@ class Board extends React.Component {
     return [];
   };
 
-  czy_jest_jakiekolwiek_aktywne_pole = iloscOczek => {
+  czy_jest_jakiekolwiek_aktywne_pole = (iloscOczek) => {
     const tab = this.state.squares;
-    const isActive = tab.some(function(el) {
+    const isActive = tab.some(function (el) {
       return el.aktywny === true;
     });
     console.log("Jest aktywne pole", isActive); //true
     return true;
   };
 
-  czekaj_na_wskazanie_pola = async pola => {
+  czekaj_na_wskazanie_pola = async (pola) => {
     console.log(`czekaj_na_wskazanie_pola`);
 
     const ppp = new Promise((resolve, reject) => {
@@ -169,7 +169,7 @@ class Board extends React.Component {
     // console.log("DOCZEKAŁ użyto pola numer: ", position);
   };
 
-  czy_wygrał_gracz = player => {
+  czy_wygrał_gracz = (player) => {
     const squares = this.state.squares;
     if (squares[squares.length - 1].value === WonArgument()) {
       return true;
@@ -213,7 +213,7 @@ class Board extends React.Component {
         <button onClick={this.startGameLoop}>START Gry</button>
 
         <ul className="board-row">
-          {this.state.squares.map(item => (
+          {this.state.squares.map((item) => (
             <Square key={item.position} {...item} zmiana={this.handleClick} />
           ))}
         </ul>
