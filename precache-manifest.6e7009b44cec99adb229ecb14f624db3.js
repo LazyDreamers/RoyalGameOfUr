@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "bdad8dec2b841b5c5056c4dea69f6e5d",
+    "revision": "bd9482f2417daac7b285e20427398405",
     "url": "/RoyalGameOfUr/index.html"
   },
   {
-    "revision": "41f5c7bab69ad4e7c99a",
-    "url": "/RoyalGameOfUr/static/css/main.43b69f8e.chunk.css"
+    "revision": "83084465268165ba9d97",
+    "url": "/RoyalGameOfUr/static/css/main.ed2ea31c.chunk.css"
   },
   {
     "revision": "c1135c3648959c335e3f",
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/RoyalGameOfUr/static/js/2.69486de2.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "41f5c7bab69ad4e7c99a",
-    "url": "/RoyalGameOfUr/static/js/main.793a12e2.chunk.js"
+    "revision": "83084465268165ba9d97",
+    "url": "/RoyalGameOfUr/static/js/main.8992eb30.chunk.js"
   },
   {
     "revision": "c0dd99235c78a11cfd2d",
