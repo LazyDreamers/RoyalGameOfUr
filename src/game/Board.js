@@ -4,7 +4,6 @@ import "./Board.scss";
 
 function MakeDefaultsSquares() {
   return [
-<<<<<<< HEAD
     {  position: 0, p1id: 2, p2id: null, value: 3, player: 0, aktywny: false, extra: false },
     {  position: 1, p1id: 1, p2id: null, value: 0, player: 0, aktywny: false, extra: false },
     {  position: 2, p1id: 0, p2id: null, value: 0, player: 0, aktywny: false, extra: false },
@@ -19,22 +18,7 @@ function MakeDefaultsSquares() {
     {  position: 11, p1id: null, p2id: 1, value: 0, player: 0, aktywny: false, extra: false },
     {  position: 12, p1id: null, p2id: 0, value: 0, player: 0, aktywny: false, extra: false },
     {  position: 13, p1id: null, p2id: 9, value: 0, player: 0, aktywny: false, extra: false },
-    {  position: 14, p1id: null, p2id: 8, value: 0, player: 0, aktywny: false, extra: false }
-=======
-    { sid: 14, position: 0, value: 3, player: 0, aktywny: false, extra: false },
-    { sid: 13, position: 1, value: 0, player: 0, aktywny: false, extra: false },
-    { sid: 12, position: 2, value: 0, player: 0, aktywny: false, extra: false },
-    { sid: 11, position: 3, value: 0, player: 0, aktywny: false, extra: false },
-    { sid: 21, position: 4, value: 0, player: 0, aktywny: false, extra: false },
-    { sid: 22, position: 5, value: 0, player: 0, aktywny: false, extra: false },
-    { sid: 23, position: 6, value: 0, player: 0, aktywny: false, extra: false },
-    { sid: 24, position: 7, value: 0, player: 0, aktywny: false, extra: false },
-    { sid: 25, position: 8, value: 0, player: 0, aktywny: false, extra: false },
-    { sid: 26, position: 9, value: 0, player: 0, aktywny: false, extra: false },
-    // { sid: 27, position: 10, value: 0, player: 0, aktywny: false, extra: false }
-    // { sid: 28, position: 11, value: 0, player: 0, aktywny: false, extra: false },
-    // { sid: 18, position: 12, value: 0, player: 0, aktywny: false, extra: false },
->>>>>>> master
+    {  position: 14, p1id: null, p2id: 8, value: 0, player: 0, aktywny: false, extra: false },
   ];
 }
 
