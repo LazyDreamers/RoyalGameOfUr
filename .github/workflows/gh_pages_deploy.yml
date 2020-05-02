@@ -1,0 +1,44 @@
+# This workflow will do a clean install of node dependencies, build the source code and make deploy to GitHub Pages.
+
+name: Deploy on GitHub Pages
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Instal packages.
+      run: npm ci
+    - name: Build release.
+      run: npm run build --if-present
+    - name: Prepare for Deploy.
+      env:
+        SSH_KEY: ${{ secrets.gh_pages_deploy }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "$SSH_KEY" > ~/.ssh/id_rsa
+        chmod 0600 ~/.ssh/id_rsa
+        echo "cat config:"
+        cat .git/config
+        git config --local user.email "bot"
+        git config --global user.name "bot"
+        git remote set-url origin git@github.com:LazyDreamers/RoyalGameOfUr.git
+        echo "cat config:"
+        cat .git/config
+    - name: Deploy on GitHub Pages.
+      run: npm run deploy
+    - name: Cleanup after Deploy.
+      run: rm ~/.ssh/id_rsa
+    - name: Finish
+      run: echo "Finish"
