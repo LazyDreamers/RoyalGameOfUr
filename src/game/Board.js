@@ -1,50 +1,36 @@
 import React from "react";
 import Square from "./Square";
 import "./Board.scss";
-
-// function MakeDefaultsSquares() {
-//   return [
-//     {  position: 0, p1id: 2, p2id: null, value: 3, player: 0, aktywny: false, extra: false },
-//     {  position: 1, p1id: 1, p2id: null, value: 0, player: 0, aktywny: false, extra: false },
-//     {  position: 2, p1id: 0, p2id: null, value: 0, player: 0, aktywny: false, extra: false },
-//     {  position: 3, p1id: 9, p2id: null, value: 0, player: 0, aktywny: false, extra: false },
-//     {  position: 4, p1id: 8, p2id: null, value: 0, player: 0, aktywny: false, extra: false },
-//     {  position: 5, p1id: 3, p2id: 3, value: 0, player: 0, aktywny: false, extra: false },
-//     {  position: 6, p1id: 4, p2id: 4, value: 0, player: 0, aktywny: false, extra: false },
-//     {  position: 7, p1id: 5, p2id: 5, value: 0, player: 0, aktywny: false, extra: false },
-//     {  position: 8, p1id: 6, p2id: 6, value: 0, player: 0, aktywny: false, extra: false },
-//     {  position: 9, p1id: 7, p2id: 7, value: 0, player: 0, aktywny: false, extra: false },
-//     {  position: 10, p1id: null, p2id: 2, value: 0, player: 0, aktywny: false, extra: false },
-//     {  position: 11, p1id: null, p2id: 1, value: 0, player: 0, aktywny: false, extra: false },
-//     {  position: 12, p1id: null, p2id: 0, value: 0, player: 0, aktywny: false, extra: false },
-//     {  position: 13, p1id: null, p2id: 9, value: 0, player: 0, aktywny: false, extra: false },
-//     {  position: 14, p1id: null, p2id: 8, value: 0, player: 0, aktywny: false, extra: false }
-//   ];
-// }
+// import MakeDefaultsSquares from "./STATE.js";
 
 function MakeDefaultsState() {
   return {
     squares: {
-      11: { uid: 11, value: 3, aktywny: false, extra: false },
-      12: { uid: 12, value: 0, aktywny: false, extra: false },
-      13: { uid: 13, value: 0, aktywny: false, extra: false },
-      14: { uid: 14, value: 0, aktywny: false, extra: false },
-      15: { uid: 15, value: 0, aktywny: false, extra: false },
-      21: { uid: 21, value: 3, aktywny: false, extra: false },
-      22: { uid: 22, value: 0, aktywny: false, extra: false },
-      23: { uid: 23, value: 0, aktywny: false, extra: false },
-      24: { uid: 24, value: 0, aktywny: true, extra: false },
-      25: { uid: 25, value: 0, aktywny: false, extra: false }
+      0: { uid: 0, value: 0, player: 0, aktywny: false, extra: false },
+      1: { uid: 1, value: 0, player: 0, aktywny: false, extra: false },
+      2: { uid: 2, value: 2, player: 1, aktywny: false, extra: false },
+      3: { uid: 3, value: 0, player: 0, aktywny: false, extra: false },
+      4: { uid: 4, value: 0, player: 0, aktywny: false, extra: false },
+      5: { uid: 5, value: 0, player: 0, aktywny: false, extra: false },
+      6: { uid: 6, value: 0, player: 0, aktywny: false, extra: false },
+      7: { uid: 7, value: 0, player: 0, aktywny: false, extra: false },
+      8: { uid: 8, value: 0, player: 0, aktywny: false, extra: false },
+      9: { uid: 9, value: 0, player: 0, aktywny: false, extra: false },
+      10: { uid: 10, value: 0, player: 0, aktywny: false, extra: false },
+      11: { uid: 11, value: 0, player: 0, aktywny: false, extra: false },
+      12: { uid: 12, value: 2, player: 2, aktywny: false, extra: false },
+      13: { uid: 13, value: 0, player: 0, aktywny: false, extra: false },
+      14: { uid: 14, value: 0, player: 0, aktywny: false, extra: false }
     },
-    sciezki: [
-      ///
-      [11, 12, 22, 23],
-      [21, 22, 12, 13]
+    paths: [
+      [2, 1, 0, 5, 6, 7, 8, 9, 4, 3],
+      [12, 11, 10, 5, 6, 7, 8, 9, 14, 13]
     ],
     render: [
       ///
-      [11, 12, 13, 14, 15],
-      [21, 22, 23, 24, 25]
+      [0, 1, 2, 3, 4],
+      [5, 6, 7, 8, 9],
+      [10, 11, 12, 13, 14]
     ],
     orderSquares() {
       console.debug(`BEGIN, coś:`, this);
@@ -63,51 +49,8 @@ function MakeDefaultsState() {
   };
 }
 
-//// https://kursjs.pl/kurs/super-podstawy/tablice.php
-//const tab = ["Marcin", "Ania", "Agnieszka"];
-// for (const el of tab) {
-//   console.log(el);
-// }
-
-//onst pola = MakeDefaultsSquares();
-//
-//onst playerCount = pola.scieki.length;
-//
-//onst currentPlayerIndex = playerCount - 1;
-//
-//onst sciezkaCurrentPlayera = pola.scieki[currentPlayerIndex];
-//onst sciezkaPlayera2 = pola.scieki[1];
-//
-//onst pierwszePoleGracza1 = pola[sciezkaPlayera1[0]]
-//
-//unction wyliczNastępnePole(pola, sciezkaCurrentPlayera, aktualnePole, ilośćOczek) {
-// // const ścieka2 = [];
-// // ścieka2.indexOf
-// //ścieka = [11, 12];
-// // ilośćOczek = 1
-// const indexAktualnegoPolaNaWskazanejŚciece = ścieka.indexOf(aktualnePole.uid);
-// const indexNastępnegoPolaNaWskazanejŚciece = indexAktualnegoPolaNaWskazanejŚciece + ilośćOczek;
-// const uidNastepnegoPola = ścieka[indexNastępnegoPolaNaWskazanejŚciece];
-// const nastepnePole = pola[uidNastepnegoPola];
-// return nastepnePole;
-//
-//
-//
-//
-//
-//onst następnePole = wyliczNastępnePole(pola, sciezkaPlayera1, pierwszePoleGracza1, ilośćOczek);
-//
-//ierwszePoleGracza1.aktywny
-//
-//unction WonArgument() {
-// //??
-// const meta = MakeDefaultsSquares();
-// return meta[0].value;
-//
-
 class Board extends React.Component {
   fullSquares = MakeDefaultsState();
-
   state = {
     firstPlayer: 1,
     squares: this.fullSquares.orderSquares()
@@ -118,80 +61,55 @@ class Board extends React.Component {
   };
 
   startGameLoop = async () => {
+    const fullSquaresState = this.state.squares;
+
     console.log(
       `START GRY :tada:`,
-      this.state.squares[0],
-      this.state.squares[12]
+      fullSquaresState[2].value,
+      fullSquaresState
     );
 
+    let player = 1;
+    let aktywnePola = [];
     //tu zaczynamy gre
+
+    // this.state.squares.forEach(() => {
+    //   console.log('square')})
 
     while (true) {
       // początek tury
-
-      let player = this.state.firstPlayer;
-      console.error("THIS PLAYER: ", this.state.firstPlayer);
-
-      function pathFor1() {
-        const path1 = [];
-        const path = MakeDefaultsSquares();
-        for (let i = 0; i < path.length; i++) {
-          if (typeof path[i].p1id === "number") {
-            path1.push(path[i]);
-          }
-        }
-        const tab1 = path1.sort(function(a, b) {
-          return a.p1id - b.p1id;
-        });
-        return tab1;
-      }
-
-      function pathFor2() {
-        const path2 = [];
-        const path = MakeDefaultsSquares();
-
-        for (let i = 0; i < path.length; i++) {
-          if (typeof path[i].p2id === "number") {
-            path2.push(path[i]);
-          }
-        }
-        const tab2 = path2.sort(function(a, b) {
-          return a.p2id - b.p2id;
-        });
-        return tab2;
-      }
-
-      console.log(pathFor2());
-
-      this.reset_stanu_mety_i_startu_i_dezaktywacja_pól(player);
+      console.error("THIS PLAYER: ", player);
+      this.reset_stanu_mety_i_startu_i_dezaktywacja_pól(
+        player,
+        fullSquaresState
+      );
       const iloscOczek = this.rzucamy_kostką();
-      const aktywnePola = this.sprawdza_dostępne_ruchy_i_aktywuj_pola(
+      aktywnePola = this.sprawdza_dostępne_ruchy_i_aktywuj_pola(
         iloscOczek,
         player,
         aktywnePola,
-        pathFor1,
-        pathFor2
+        fullSquaresState
       );
-
-      console.warn(`aktywnePola.length = ${aktywnePola.length}, `, aktywnePola);
       // if (!this.czy_jest_jakiekolwiek_aktywne_pole(iloscOczek)) {
       if (aktywnePola.length === 0) {
-        player = this.next_player(player);
+        player = this.change_player(player);
+        alert("Skończyły Ci się ruchy. Zmiana gracza.");
         this.koniec_tury();
         continue;
       }
 
       const pole = await this.czekaj_na_wskazanie_pola(aktywnePola);
-      console.warn(`czekaj_na_wskazanie_pola zrwóciło: `, pole);
+      console.log(`czekaj_na_wskazanie_pola zrwóciło: `, pole);
 
-      this.wykonaj_ruch(pole, iloscOczek, player);
+      this.wykonaj_ruch(pole, iloscOczek, player, fullSquaresState);
 
       if (this.czy_wygrał_gracz(player)) {
         break;
       }
 
       if (!this.sprawdz_extra_targetSquare()) {
-        player = this.next_player(player);
+        player = this.change_player(player);
+        alert("Skończyły Ci się ruchy. Zmiana gracza.");
       }
 
       this.koniec_tury();
@@ -206,27 +124,25 @@ class Board extends React.Component {
   //   return 2;
   // };
 
-  next_player = player => {
-    alert("Skończyły Ci się ruchy. Zmiana gracza.");
-    console.log("NEXT PLAYER");
-    let firstPlayer = this.state.firstPlayer;
+  change_player = player => {
+    console.log("change PLAYER");
     if (player === 1) {
-      firstPlayer = 2;
+      return 2;
     } else {
-      firstPlayer = 1;
+      return 1;
     }
-
-    this.setState({ firstPlayer: firstPlayer });
   };
 
-  reset_stanu_mety_i_startu_i_dezaktywacja_pól = player => {
-    const squares = this.state.squares.slice();
+  reset_stanu_mety_i_startu_i_dezaktywacja_pól = (player, fullSquaresState) => {
+    const squares = fullSquaresState;
 
     for (let i = 0; i < squares.length; i++) {
       squares[i].aktywny = false;
     }
-    squares[0].player = player;
-    squares[squares.length - 1].player = 0;
+    squares[2].player = 1;
+    squares[12].player = 2;
+    squares[3].player = 0;
+    squares[13].player = 0;
 
     this.setState({ squares: squares });
 
@@ -235,43 +151,32 @@ class Board extends React.Component {
 
   rzucamy_kostką = () => {
     const wynikKostki = Math.floor(Math.random() * (4 - 1 + 1) + 1);
-    console.log(`wynik kostki:`, wynikKostki);
+    console.warn(`wynik kostki:`, wynikKostki);
     return wynikKostki;
   };
+
+  currentPlayerPath = player => this.fullSquares.paths[player - 1];
 
   sprawdza_dostępne_ruchy_i_aktywuj_pola = (
     iloscOczek,
     player,
     aktywnePola,
-    pathFor1,
-    pathFor2,
-    pole
+    fullSquaresState
   ) => {
-    console.log(
-      `sprawdza dostępne ruchy i ustawia aktywne pola, iloscOczek:`,
-      iloscOczek
-    );
-
     aktywnePola = [];
-    //  console.log(path1.length);
-    console.log(pathFor1());
 
-    // const tab1 = {path1};
-    // const tab2 = {pathFor2};
-    // console.log(tab1);
-    console.log(pathFor2());
+    const squares = fullSquaresState;
 
-    const squares = this.state.squares.slice();
+    const path = this.currentPlayerPath(player);
 
-    //  if (player === 1 ) {squares = path2} else {squares = path1};
+    for (let i = 0; i < path.length; i++) {
+      if (!squares[path[i]].value <= 0) {
+        if (squares[path[i]].player === player) {
+          if (i + iloscOczek <= path.length - 1) {
+            if (squares[path[i + iloscOczek]].player !== player) {
+              squares[path[i]].aktywny = true;
 
-    for (let i = 0; i < squares.length; i++) {
-      if (!squares[i].value <= 0) {
-        if (squares[i].player === player) {
-          if ([i + iloscOczek] <= squares.length - 1) {
-            if (squares[i + iloscOczek].player !== player) {
-              squares[i].aktywny = true;
-              aktywnePola.push(squares[i]);
+              aktywnePola.push(squares[path[i]]);
             }
           } else {
             break;
@@ -279,7 +184,7 @@ class Board extends React.Component {
         }
       }
     }
-
+    console.log(aktywnePola);
     this.setState({ squares: squares });
     return aktywnePola;
   };
@@ -309,19 +214,54 @@ class Board extends React.Component {
     return pole;
   };
 
-  wykonaj_ruch = (pole, iloscOczek, player) => {
-    const position = pole.position;
-    // console.log(`Fn wykonuje ruch z pola: `, position);
-    // console.log(`Fn wykonuje ruch o iloscOczek:`, iloscOczek);
-    const squares = this.state.squares.slice();
-    const sourceSquare = squares[position];
-    const targetSquare = squares[position + iloscOczek];
+  wykonaj_ruch = (pole, iloscOczek, player, fullSquaresState) => {
+    // console.warn(pole.uid);
+    // console.warn(pole);
+    const position = pole.uid;
 
-    sourceSquare.value = sourceSquare.value - 1;
-    targetSquare.value = targetSquare.value + 1;
-    sourceSquare.player = 0;
-    targetSquare.player = player;
-    sourceSquare.aktywny = false;
+    const squares = fullSquaresState;
+    const path = this.currentPlayerPath(player);
+    const index = path.findIndex(el => {
+      return el === position;
+    });
+    const pathIndex = path[index];
+
+    const enemyPlayerPath = this.currentPlayerPath(this.change_player(player));
+
+    console.log(
+      "player",
+      squares[path[0]],
+      "VS enemy",
+      squares[enemyPlayerPath[0]]
+    );
+
+    console.log(path);
+    console.log(pathIndex);
+
+    const sourceSquare = squares[pathIndex];
+    console.log(sourceSquare);
+    const targetSquare = squares[path[index + iloscOczek]];
+    let enemyValue = squares[enemyPlayerPath[0]].value;
+    console.warn(enemyValue);
+
+    if (targetSquare.player !== 0) {
+      sourceSquare.value = sourceSquare.value - 1;
+      squares[enemyPlayerPath[0]].value = squares[enemyPlayerPath[0]].value + 1;
+      sourceSquare.player = 0;
+      targetSquare.player = player;
+    } else {
+      sourceSquare.value = sourceSquare.value - 1;
+      targetSquare.value = targetSquare.value + 1;
+      sourceSquare.player = 0;
+      targetSquare.player = player;
+    }
+
+    console.log(
+      "player",
+      squares[path[0]],
+      "VS enemy",
+      squares[enemyPlayerPath[0]]
+    );
 
     this.setState({ squares: squares });
     // console.log("DOCZEKAŁ użyto pola numer: ", position);
@@ -329,7 +269,7 @@ class Board extends React.Component {
 
   czy_wygrał_gracz = player => {
     const squares = this.state.squares;
-    if (squares[squares.length - 1].value === WonArgument()) {
+    if (squares[3].value === 2 || squares[13].value === 2) {
       return true;
     } else {
       return false;
@@ -338,18 +278,17 @@ class Board extends React.Component {
 
   sprawdz_extra_targetSquare = () => {
     console.log(`sprawdz extra targetSquare`);
-    return true;
+    return false;
   };
 
   koniec_tury = () => {
     console.log(`koniec tury`);
-    this.reset_stanu_mety_i_startu_i_dezaktywacja_pól(this.player);
   };
 
   koniec_gry = () => {
     console.log(`koniec gry`);
     alert("PRZESZEDŁEŚ CAŁA GRĘ!! GRATULUJĘ!!");
-    this.setState({ squares: MakeDefaultsSquares() });
+    this.setState({ squares: MakeDefaultsState().orderSquares() });
   };
 
   ///
@@ -358,10 +297,10 @@ class Board extends React.Component {
   };
 
   handleClick = square => {
-    console.log(`handleClick: `, square);
-    const position = square.position;
-    const value = square.value;
-    console.log(`handleClick: value: ${value} position: `, position);
+    // console.log(`handleClick: `, square);
+    // const uid = square.uid;
+    // const value = square.value;
+    // console.log(`handleClick: value: ${value} position: `, uid);
 
     if (this.receipt) {
       const potwierdzenie = this.receipt;
@@ -370,22 +309,10 @@ class Board extends React.Component {
       console.error(" !  ojjojoj, brakuje paragonu");
     }
   };
+  showPlayer = player => {
+    return player;
+  };
   render() {
-    // function() {
-    //   console.debug(`BEGIN, coś:`, this);
-    //   const squares = [];
-    //   for (const kolumna of this.render) {
-    //     console.debug(`  kolumna:`, kolumna);
-    //     for (const uidSquare of kolumna) {
-    //       const square = this[uidSquare];
-    //       console.debug(`  this[${uidSquare}]: `, square);
-    //       squares.push(square);
-    //     }
-    //   }
-    //   console.debug(`END`, squares);
-    //   return squares;
-    // }
-
     return (
       <>
         <button onClick={this.startGameLoop}>START Gry</button>
@@ -403,20 +330,6 @@ class Board extends React.Component {
                 />
               ))
           )}
-        </ul>
-
-        <ul className="board">
-          {this.state.squares.map(function(square) {
-            // console.warn(`  wystrzel: `, square);
-            return (
-              <Square
-                key={square.uid}
-                {...square}
-                square={square}
-                zmiana={this.handleClick}
-              />
-            );
-          })}
         </ul>
       </>
     );

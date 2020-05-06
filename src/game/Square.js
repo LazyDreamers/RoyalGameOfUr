@@ -1,24 +1,15 @@
 import React from "react";
 import "./Square.scss";
 
-const Square = ({
-  square,
-  position,
-  aktywny,
-  value,
-  player,
-  p1id,
-  p2id,
-  zmiana
-}) => (
+const Square = ({ uid, square, aktywny, value, player, zmiana }) => (
   <button
     className={aktywny ? "bodyActive" : "bodyInactive"}
     onClick={() => {
-      console.log("Square.js ", { position, value, player });
+      // console.log("Square.js ", { position, value, player });
       zmiana(square);
     }}
   >
-    {p1id} {p2id}
+    {value} {player}
   </button>
 );
 
