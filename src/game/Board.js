@@ -20,17 +20,16 @@ function MakeDefaultsState() {
       11: { uid: 11, value: 0, player: 0, aktywny: false, extra: false },
       12: { uid: 12, value: 2, player: 2, aktywny: false, extra: false },
       13: { uid: 13, value: 0, player: 0, aktywny: false, extra: false },
-      14: { uid: 14, value: 0, player: 0, aktywny: false, extra: false }
+      14: { uid: 14, value: 0, player: 0, aktywny: false, extra: false },
     },
     paths: [
       [2, 1, 0, 5, 6, 7, 8, 9, 4, 3],
-      [12, 11, 10, 5, 6, 7, 8, 9, 14, 13]
+      [12, 11, 10, 5, 6, 7, 8, 9, 14, 13],
     ],
     render: [
-      ///
       [0, 1, 2, 3, 4],
       [5, 6, 7, 8, 9],
-      [10, 11, 12, 13, 14]
+      [10, 11, 12, 13, 14],
     ],
     orderSquares() {
       console.debug(`BEGIN, coś:`, this);
@@ -45,7 +44,7 @@ function MakeDefaultsState() {
       }
       console.debug(`END`, squares);
       return squares;
-    }
+    },
   };
 }
 
@@ -53,11 +52,11 @@ class Board extends React.Component {
   fullSquares = MakeDefaultsState();
   state = {
     firstPlayer: 1,
-    squares: this.fullSquares.orderSquares()
+    squares: this.fullSquares.orderSquares(),
   };
   receipt = {
-    resolve: value => {},
-    reject: reason => {}
+    resolve: (value) => {},
+    reject: (reason) => {},
   };
 
   startGameLoop = async () => {
@@ -104,6 +103,10 @@ class Board extends React.Component {
       this.wykonaj_ruch(pole, iloscOczek, player, fullSquaresState);
 
       if (this.czy_wygrał_gracz(player)) {
+        this.reset_stanu_mety_i_startu_i_dezaktywacja_pól(
+          player,
+          fullSquaresState
+        );
         break;
       }
 
@@ -115,6 +118,7 @@ class Board extends React.Component {
       this.koniec_tury();
     }
     //
+
     this.koniec_gry();
     console.log(`Gra się zakończyła, wygrał player: `, "player");
   };
@@ -124,7 +128,7 @@ class Board extends React.Component {
   //   return 2;
   // };
 
-  change_player = player => {
+  change_player = (player) => {
     console.log("change PLAYER");
     if (player === 1) {
       return 2;
@@ -155,7 +159,7 @@ class Board extends React.Component {
     return wynikKostki;
   };
 
-  currentPlayerPath = player => this.fullSquares.paths[player - 1];
+  currentPlayerPath = (player) => this.fullSquares.paths[player - 1];
 
   sprawdza_dostępne_ruchy_i_aktywuj_pola = (
     iloscOczek,
@@ -189,7 +193,7 @@ class Board extends React.Component {
     return aktywnePola;
   };
 
-  czy_jest_jakiekolwiek_aktywne_pole = player => {
+  czy_jest_jakiekolwiek_aktywne_pole = (player) => {
     // if (player === 1) {
     //   p1id
     // } else {
@@ -203,7 +207,7 @@ class Board extends React.Component {
     return isActive;
   };
 
-  czekaj_na_wskazanie_pola = async pola => {
+  czekaj_na_wskazanie_pola = async (pola) => {
     console.log(`czekaj_na_wskazanie_pola: AKTYWACJA: `, pola);
 
     const pole = await new Promise((resolve, reject) => {
@@ -221,7 +225,7 @@ class Board extends React.Component {
 
     const squares = fullSquaresState;
     const path = this.currentPlayerPath(player);
-    const index = path.findIndex(el => {
+    const index = path.findIndex((el) => {
       return el === position;
     });
     const pathIndex = path[index];
@@ -267,9 +271,9 @@ class Board extends React.Component {
     // console.log("DOCZEKAŁ użyto pola numer: ", position);
   };
 
-  czy_wygrał_gracz = player => {
+  czy_wygrał_gracz = (player) => {
     const squares = this.state.squares;
-    if (squares[3].value === 2 || squares[13].value === 2) {
+    if ((squares[3].value === 2) || (squares[13].value === 2)) {
       return true;
     } else {
       return false;
@@ -296,7 +300,7 @@ class Board extends React.Component {
     "funkcja sprawdzająca";
   };
 
-  handleClick = square => {
+  handleClick = (square) => {
     // console.log(`handleClick: `, square);
     // const uid = square.uid;
     // const value = square.value;
@@ -309,7 +313,7 @@ class Board extends React.Component {
       console.error(" !  ojjojoj, brakuje paragonu");
     }
   };
-  showPlayer = player => {
+  showPlayer = (player) => {
     return player;
   };
   render() {
@@ -318,10 +322,10 @@ class Board extends React.Component {
         <button onClick={this.startGameLoop}>START Gry</button>
 
         <ul className="board">
-          {this.fullSquares.render.map(kolumna =>
+          {this.fullSquares.render.map((kolumna) =>
             kolumna
-              .map(uidSquare => this.fullSquares.squares[uidSquare])
-              .map(square => (
+              .map((uidSquare) => this.fullSquares.squares[uidSquare])
+              .map((square) => (
                 <Square
                   key={square.uid}
                   {...square}
