@@ -1,6 +1,4 @@
 import React from "react";
-import Status from "./game/Status";
-import Tile from "./game/Tile";
 import "./styles.scss";
 import Board from "./game/Board";
 
@@ -13,7 +11,6 @@ import Board from "./game/Board";
 
 const App = () => (
   <>
-    
     <div>
       <Board />
     </div>
