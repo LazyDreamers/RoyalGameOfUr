@@ -3,202 +3,140 @@ import Square from "./Square";
 import "./Board.scss";
 // import MakeDefaultsSquares from "./STATE.js";
 
-function MakeDefaultsState() {
-  return {
-    squares: {
-      0: { uid: 0, value: 0, player: 0, aktywny: false, extra: false },
-      1: { uid: 1, value: 0, player: 0, aktywny: false, extra: false },
-      2: { uid: 2, value: 2, player: 1, aktywny: false, extra: false },
-      3: { uid: 3, value: 0, player: 0, aktywny: false, extra: false },
-      4: { uid: 4, value: 0, player: 0, aktywny: false, extra: false },
-      5: { uid: 5, value: 0, player: 0, aktywny: false, extra: false },
-      6: { uid: 6, value: 0, player: 0, aktywny: false, extra: false },
-      7: { uid: 7, value: 0, player: 0, aktywny: false, extra: false },
-      8: { uid: 8, value: 0, player: 0, aktywny: false, extra: false },
-      9: { uid: 9, value: 0, player: 0, aktywny: false, extra: false },
-      10: { uid: 10, value: 0, player: 0, aktywny: false, extra: false },
-      11: { uid: 11, value: 0, player: 0, aktywny: false, extra: false },
-      12: { uid: 12, value: 2, player: 2, aktywny: false, extra: false },
-      13: { uid: 13, value: 0, player: 0, aktywny: false, extra: false },
-      14: { uid: 14, value: 0, player: 0, aktywny: false, extra: false },
+function MakeDefaultsStore() {
+  const store = {
+    _base: {
+      ///
+      A: { uid: "A", value: 2, player: "dawid", aktywny: false, extra: false },
+      B: { uid: "B", value: 0, player: null, aktywny: false, extra: false },
+      C: { uid: "C", value: 0, player: null, aktywny: false, extra: false },
+      D: { uid: "D", value: 2, player: "damian", aktywny: false, extra: false },
+      E: { uid: "E", value: 0, player: null, aktywny: false, extra: false },
+      F: { uid: "F", value: 0, player: null, aktywny: false, extra: false }
     },
-    paths: [
-      [2, 1, 0, 5, 6, 7, 8, 9, 4, 3],
-      [12, 11, 10, 5, 6, 7, 8, 9, 14, 13],
-    ],
-    render: [
-      [0, 1, 2, 3, 4],
-      [5, 6, 7, 8, 9],
-      [10, 11, 12, 13, 14],
-    ],
-    orderSquares() {
-      console.debug(`BEGIN, coś:`, this);
-      const squares = [];
-      for (const kolumna of this.render) {
-        console.debug(`  kolumna:`, kolumna);
-        for (const uidSquare of kolumna) {
-          const square = this.squares[uidSquare];
-          console.debug(`  this.squares[${uidSquare}]: `, square);
-          squares.push(square);
-        }
-      }
-      console.debug(`END`, squares);
-      return squares;
+    _pathsForPlayers: {
+      ///
+      dawid: ["A", "B", "E", "F"],
+      damian: ["D", "E", "B", "C"]
     },
+    _render: [
+      ///
+      ["A", "B", "C"],
+      ["D", "E", "F"]
+    ],
+    receipt: {
+      resolve: value => {},
+      reject: reason => {}
+    },
+    getFirstPlayer() {
+      return "dawid";
+    },
+    getPlayerPath(player) {
+      // TODO: Co jak player nie istnieje?
+      return this._pathsForPlayers[player].map(uid => {
+        return this._base[uid];
+      });
+    },
+    nextPlayer: player => {
+      return player === "dawid" ? "damian" : "dawid";
+    },
+    renderSquares() {
+      return this._render
+        .map(kolumna => kolumna.map(uid => this._base[uid]))
+        .flat();
+    }
   };
+  store.receipt = null;
+  return store;
 }
 
+///
+
+// const store = MakeDefaultsStore();
+// console.debug(`DEBUG:`, store.getPlayerPath("dawid"));
+
+///
+
 class Board extends React.Component {
-  fullSquares = MakeDefaultsState();
-  state = {
-    firstPlayer: 1,
-    squares: this.fullSquares.orderSquares(),
-  };
-  receipt = {
-    resolve: (value) => {},
-    reject: (reason) => {},
-  };
+  store = MakeDefaultsStore();
 
   startGameLoop = async () => {
-    const fullSquaresState = this.state.squares;
+    const store = this.store;
 
-    console.log(
-      `START GRY :tada:`,
-      fullSquaresState[2].value,
-      fullSquaresState
-    );
+    let player = store.getFirstPlayer();
 
-    let player = 1;
-    let aktywnePola = [];
-    //tu zaczynamy gre
-
-    // this.state.squares.forEach(() => {
-    //   console.log('square')})
+    console.log(`START GRY, zaczyna: ${player}`);
 
     while (true) {
       // początek tury
-      console.error("THIS PLAYER: ", player);
-      this.reset_stanu_mety_i_startu_i_dezaktywacja_pól(
-        player,
-        fullSquaresState
-      );
-      const iloscOczek = this.rzucamy_kostką();
-      aktywnePola = this.sprawdza_dostępne_ruchy_i_aktywuj_pola(
-        iloscOczek,
-        player,
-        aktywnePola,
-        fullSquaresState
-      );
-      // if (!this.czy_jest_jakiekolwiek_aktywne_pole(iloscOczek)) {
-      if (aktywnePola.length === 0) {
-        player = this.change_player(player);
-        alert("Skończyły Ci się ruchy. Zmiana gracza.");
+      console.error(`Teraz player: ${player}`);
+
+      const dice = this.rzucamy_kostką();
+      const polaDoAktywacji = this.zwraca_pola_do_aktywacji({
+        store,
+        dice,
+        player
+      });
+
+      if (polaDoAktywacji.length === 0) {
+        player = store.nextPlayer(player);
         this.koniec_tury();
         continue;
       }
 
-      const pole = await this.czekaj_na_wskazanie_pola(aktywnePola);
+      const pole = await this.czekaj_na_wskazanie_pola(polaDoAktywacji);
       console.log(`czekaj_na_wskazanie_pola zrwóciło: `, pole);
 
-      this.wykonaj_ruch(pole, iloscOczek, player, fullSquaresState);
+      const targetSquare = this.wykonaj_ruch({ store, pole, dice, player });
 
-      if (this.czy_wygrał_gracz(player)) {
-        this.reset_stanu_mety_i_startu_i_dezaktywacja_pól(
-          player,
-          fullSquaresState
-        );
+      if (this.czy_wygrał_gracz({ store, player })) {
         break;
       }
 
-      if (!this.sprawdz_extra_targetSquare()) {
+      if (!targetSquare.extra) {
         player = this.change_player(player);
-        alert("Skończyły Ci się ruchy. Zmiana gracza.");
+        console.warn("::WHILE:: sprawdź extra: Zmiana gracza.");
       }
 
       this.koniec_tury();
     }
     //
 
-    this.koniec_gry();
-    console.log(`Gra się zakończyła, wygrał player: `, "player");
-  };
-
-  // aktualny_gracz = () => {
-  //   console.log(`pobierz pierwszego gracza`);
-  //   return 2;
-  // };
-
-  change_player = (player) => {
-    console.log("change PLAYER");
-    if (player === 1) {
-      return 2;
-    } else {
-      return 1;
-    }
-  };
-
-  reset_stanu_mety_i_startu_i_dezaktywacja_pól = (player, fullSquaresState) => {
-    const squares = fullSquaresState;
-
-    for (let i = 0; i < squares.length; i++) {
-      squares[i].aktywny = false;
-    }
-    squares[2].player = 1;
-    squares[12].player = 2;
-    squares[3].player = 0;
-    squares[13].player = 0;
-
-    this.setState({ squares: squares });
-
-    console.log(`reset stanu mety i startu i dezaktywacja pól`);
+    this.koniec_gry(player);
+    console.log(`Gra się zakończyła, wygrał player: `, player);
   };
 
   rzucamy_kostką = () => {
-    const wynikKostki = Math.floor(Math.random() * (4 - 1 + 1) + 1);
-    console.warn(`wynik kostki:`, wynikKostki);
+    const wynikKostki = Math.floor(Math.random() * (4 - 0 + 1) + 0);
+    console.log(`wynik kostki:`, wynikKostki);
     return wynikKostki;
   };
 
-  currentPlayerPath = (player) => this.fullSquares.paths[player - 1];
+  zwraca_pola_do_aktywacji = ({ store, dice, player }) => {
+    const polaDoAktywacji = [];
 
-  sprawdza_dostępne_ruchy_i_aktywuj_pola = (
-    iloscOczek,
-    player,
-    aktywnePola,
-    fullSquaresState
-  ) => {
-    aktywnePola = [];
+    const playerPath = store.getPlayerPath(player);
 
-    const squares = fullSquaresState;
-
-    const path = this.currentPlayerPath(player);
-
-    for (let i = 0; i < path.length; i++) {
-      if (!squares[path[i]].value <= 0) {
-        if (squares[path[i]].player === player) {
-          if (i + iloscOczek <= path.length - 1) {
-            if (squares[path[i + iloscOczek]].player !== player) {
-              squares[path[i]].aktywny = true;
-
-              aktywnePola.push(squares[path[i]]);
+    playerPath.forEach((square, idx, squares) => {
+      // TODO: Mona troche uprościć
+      if (!square.value <= 0) {
+        if (square.player === player) {
+          if (idx + dice <= squares.length - 1) {
+            const targetSquare = squares[idx + dice];
+            if (targetSquare.player !== player) {
+              square.aktywny = true;
+              polaDoAktywacji.push(square);
             }
-          } else {
-            break;
           }
         }
       }
-    }
-    console.log(aktywnePola);
-    this.setState({ squares: squares });
-    return aktywnePola;
+    });
+
+    console.log(`zwraca_pola_do_aktywacji: `, polaDoAktywacji);
+    return polaDoAktywacji;
   };
 
-  czy_jest_jakiekolwiek_aktywne_pole = (player) => {
-    // if (player === 1) {
-    //   p1id
-    // } else {
-    //   p2id
-    // }
+  czy_jest_jakiekolwiek_aktywne_pole = player => {
     const tab = this.state.squares;
     const isActive = tab.some(function(el) {
       return el.aktywny === true;
@@ -207,82 +145,59 @@ class Board extends React.Component {
     return isActive;
   };
 
-  czekaj_na_wskazanie_pola = async (pola) => {
+  czekaj_na_wskazanie_pola = async pola => {
     console.log(`czekaj_na_wskazanie_pola: AKTYWACJA: `, pola);
+
+    for (const square of pola) {
+      square.aktywny = true;
+    }
 
     const pole = await new Promise((resolve, reject) => {
       console.log(`włąśnie zrobił się nowy PROMISE`, this.receipt);
       this.receipt = { resolve, reject };
     });
 
+    for (const square of pola) {
+      square.aktywny = false;
+    }
+
     return pole;
   };
 
-  wykonaj_ruch = (pole, iloscOczek, player, fullSquaresState) => {
-    // console.warn(pole.uid);
-    // console.warn(pole);
-    const position = pole.uid;
-
-    const squares = fullSquaresState;
-    const path = this.currentPlayerPath(player);
-    const index = path.findIndex((el) => {
-      return el === position;
+  wykonaj_ruch = ({ store, pole, dice, player }) => {
+    const playerPath = store.getPlayerPath(player);
+    const sourceIndex = playerPath.findIndex(el => {
+      return el === pole.uid;
     });
-    const pathIndex = path[index];
+    const sourceSquare = pole;
+    const targetSquare = playerPath[sourceIndex + dice];
 
-    const enemyPlayerPath = this.currentPlayerPath(this.change_player(player));
+    const enemyOnTargetSquare =
+      targetSquare.player !== player && targetSquare.value > 0;
 
-    console.log(
-      "player",
-      squares[path[0]],
-      "VS enemy",
-      squares[enemyPlayerPath[0]]
-    );
-
-    console.log(path);
-    console.log(pathIndex);
-
-    const sourceSquare = squares[pathIndex];
-    console.log(sourceSquare);
-    const targetSquare = squares[path[index + iloscOczek]];
-    let enemyValue = squares[enemyPlayerPath[0]].value;
-    console.warn(enemyValue);
-
-    if (targetSquare.player !== 0) {
-      sourceSquare.value = sourceSquare.value - 1;
-      squares[enemyPlayerPath[0]].value = squares[enemyPlayerPath[0]].value + 1;
-      sourceSquare.player = 0;
-      targetSquare.player = player;
-    } else {
-      sourceSquare.value = sourceSquare.value - 1;
-      targetSquare.value = targetSquare.value + 1;
-      sourceSquare.player = 0;
-      targetSquare.player = player;
+    if (enemyOnTargetSquare) {
+      // TODO: Handle multiple peons on single square
+      const enemyFirstSquare = store.getPlayerPath(store.nextPlayer(player))[0];
+      enemyFirstSquare.value += targetSquare.value;
+      targetSquare.player = null;
+      targetSquare.value = 0;
     }
 
-    console.log(
-      "player",
-      squares[path[0]],
-      "VS enemy",
-      squares[enemyPlayerPath[0]]
-    );
+    sourceSquare.value -= 1;
+    targetSquare.player = player;
+    targetSquare.value += 1;
 
-    this.setState({ squares: squares });
-    // console.log("DOCZEKAŁ użyto pola numer: ", position);
-  };
-
-  czy_wygrał_gracz = (player) => {
-    const squares = this.state.squares;
-    if ((squares[3].value === 2) || (squares[13].value === 2)) {
-      return true;
-    } else {
-      return false;
+    if (sourceSquare.value === 0) {
+      sourceSquare.player = null;
     }
+
+    return targetSquare;
   };
 
-  sprawdz_extra_targetSquare = () => {
-    console.log(`sprawdz extra targetSquare`);
-    return false;
+  czy_wygrał_gracz = ({ store, player }) => {
+    const playerPath = store.getPlayerPath(player);
+    const lastSquare = playerPath[playerPath.length - 1];
+    return lastSquare.value === 2 ? true : false;
   };
 
   koniec_tury = () => {
@@ -290,22 +205,11 @@ class Board extends React.Component {
   };
 
   koniec_gry = () => {
-    console.log(`koniec gry`);
+    console.log(`koniec gry; FUNKCJA, KONIEC GRY`);
     alert("PRZESZEDŁEŚ CAŁA GRĘ!! GRATULUJĘ!!");
-    this.setState({ squares: MakeDefaultsState().orderSquares() });
   };
 
-  ///
-  checkActive = () => {
-    "funkcja sprawdzająca";
-  };
-
-  handleClick = (square) => {
-    // console.log(`handleClick: `, square);
-    // const uid = square.uid;
-    // const value = square.value;
-    // console.log(`handleClick: value: ${value} position: `, uid);
-
+  handleClick = square => {
     if (this.receipt) {
       const potwierdzenie = this.receipt;
       potwierdzenie.resolve(square);
@@ -313,27 +217,21 @@ class Board extends React.Component {
       console.error(" !  ojjojoj, brakuje paragonu");
     }
   };
-  showPlayer = (player) => {
-    return player;
-  };
+
   render() {
     return (
       <>
         <button onClick={this.startGameLoop}>START Gry</button>
 
         <ul className="board">
-          {this.fullSquares.render.map((kolumna) =>
-            kolumna
-              .map((uidSquare) => this.fullSquares.squares[uidSquare])
-              .map((square) => (
-                <Square
-                  key={square.uid}
-                  {...square}
-                  square={square}
-                  zmiana={this.handleClick}
-                />
-              ))
-          )}
+          {this.store.renderSquares().map(square => (
+            <Square
+              key={square.uid}
+              {...square}
+              square={square}
+              zmiana={this.handleClick}
+            />
+          ))}
         </ul>
       </>
     );
