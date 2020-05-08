@@ -4,15 +4,59 @@ import "./Board.scss";
 // import MakeDefaultsSquares from "./STATE.js";
 
 function MakeDefaultsStore() {
+  const update = () => {};
+
   const store = {
     _base: {
       ///
-      A: { uid: "A", value: 2, player: "dawid", aktywny: false, extra: false },
-      B: { uid: "B", value: 0, player: null, aktywny: false, extra: false },
-      C: { uid: "C", value: 0, player: null, aktywny: false, extra: false },
-      D: { uid: "D", value: 2, player: "damian", aktywny: false, extra: false },
-      E: { uid: "E", value: 0, player: null, aktywny: false, extra: false },
-      F: { uid: "F", value: 0, player: null, aktywny: false, extra: false }
+      A: {
+        uid: "A",
+        value: 2,
+        player: "dawid",
+        aktywny: false,
+        extra: false,
+        update
+      },
+      B: {
+        uid: "B",
+        value: 0,
+        player: null,
+        aktywny: false,
+        extra: false,
+        update
+      },
+      C: {
+        uid: "C",
+        value: 0,
+        player: null,
+        aktywny: false,
+        extra: false,
+        update
+      },
+      D: {
+        uid: "D",
+        value: 2,
+        player: "damian",
+        aktywny: false,
+        extra: false,
+        update
+      },
+      E: {
+        uid: "E",
+        value: 0,
+        player: null,
+        aktywny: false,
+        extra: false,
+        update
+      },
+      F: {
+        uid: "F",
+        value: 0,
+        player: null,
+        aktywny: false,
+        extra: false,
+        update
+      }
     },
     _pathsForPlayers: {
       ///
@@ -59,6 +103,9 @@ function MakeDefaultsStore() {
 
 class Board extends React.Component {
   store = MakeDefaultsStore();
+  state = {
+    renderSquares: this.store.renderSquares()
+  };
 
   startGameLoop = async () => {
     const store = this.store;
@@ -94,7 +141,7 @@ class Board extends React.Component {
       }
 
       if (!targetSquare.extra) {
-        player = this.change_player(player);
+        player = store.nextPlayer(player);
         console.warn("::WHILE:: sprawdź extra: Zmiana gracza.");
       }
 
@@ -150,6 +197,7 @@ class Board extends React.Component {
 
     for (const square of pola) {
       square.aktywny = true;
+      square.update();
     }
 
     const pole = await new Promise((resolve, reject) => {
@@ -159,6 +207,7 @@ class Board extends React.Component {
 
     for (const square of pola) {
       square.aktywny = false;
+      square.update();
     }
 
     return pole;
@@ -224,7 +273,7 @@ class Board extends React.Component {
         <button onClick={this.startGameLoop}>START Gry</button>
 
         <ul className="board">
-          {this.store.renderSquares().map(square => (
+          {this.state.renderSquares.map(square => (
             <Square
               key={square.uid}
               {...square}
