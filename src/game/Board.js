@@ -3,6 +3,12 @@ import Square from "./Square";
 import "./Board.scss";
 // import MakeDefaultsSquares from "./STATE.js";
 
+async function Delay(delay) {
+  return new Promise(resolve => {
+    setTimeout(resolve, delay);
+  });
+}
+
 function MakeDefaultsStore() {
   const update = () => {};
 
@@ -35,8 +41,8 @@ function MakeDefaultsStore() {
       },
       D: {
         uid: "D",
-        value: 2,
-        player: "damian",
+        value: 0,
+        player: null,
         aktywny: false,
         extra: false,
         update
@@ -51,6 +57,38 @@ function MakeDefaultsStore() {
       },
       F: {
         uid: "F",
+        value: 2,
+        player: "damian",
+        aktywny: false,
+        extra: false,
+        update
+      },
+      G: {
+        uid: "G",
+        value: 0,
+        player: null,
+        aktywny: false,
+        extra: false,
+        update
+      },
+      H: {
+        uid: "H",
+        value: 0,
+        player: null,
+        aktywny: false,
+        extra: false,
+        update
+      },
+      I: {
+        uid: "I",
+        value: 0,
+        player: null,
+        aktywny: false,
+        extra: false,
+        update
+      },
+      J: {
+        uid: "J",
         value: 0,
         player: null,
         aktywny: false,
@@ -60,18 +98,14 @@ function MakeDefaultsStore() {
     },
     _pathsForPlayers: {
       ///
-      dawid: ["A", "B", "E", "F"],
-      damian: ["D", "E", "B", "C"]
+      dawid: ["A", "B", "C", "D", "E"],
+      damian: ["F", "G", "H", "I", "J"]
     },
     _render: [
       ///
-      ["A", "B", "C"],
-      ["D", "E", "F"]
+      ["A", "B", "C", "D", "E"],
+      ["F", "G", "H", "I", "J"]
     ],
-    receipt: {
-      resolve: value => {},
-      reject: reason => {}
-    },
     getFirstPlayer() {
       return "dawid";
     },
@@ -115,6 +149,8 @@ class Board extends React.Component {
     console.log(`START GRY, zaczyna: ${player}`);
 
     while (true) {
+      await Delay(500);
+
       // początek tury
       console.error(`Teraz player: ${player}`);
 
@@ -157,6 +193,7 @@ class Board extends React.Component {
     const wynikKostki = Math.floor(Math.random() * (4 - 0 + 1) + 0);
     console.log(`wynik kostki:`, wynikKostki);
     return wynikKostki;
+    // return 2;
   };
 
   zwraca_pola_do_aktywacji = ({ store, dice, player }) => {
@@ -194,9 +231,6 @@ class Board extends React.Component {
 
   czekaj_na_wskazanie_pola = async pola => {
     console.log(`czekaj_na_wskazanie_pola: AKTYWACJA: `, pola);
-  
-
-
 
     for (const square of pola) {
       square.aktywny = true;
@@ -217,33 +251,43 @@ class Board extends React.Component {
 
   wykonaj_ruch = ({ store, pole, dice, player }) => {
     const playerPath = store.getPlayerPath(player);
-    const sourceIndex = playerPath.findIndex(el => {
-      return el === pole.uid;
+    const enemyPath = store.getPlayerPath(store.nextPlayer(player));
+    const state = this.state.renderSquares;
+    const sourceIndex = playerPath.findIndex(squareOnPath => {
+      return squareOnPath.uid === pole.uid;
     });
     const sourceSquare = pole;
     const targetSquare = playerPath[sourceIndex + dice];
+    const enemyFirstSquare = enemyPath[0];
+    const playerLastSquare = playerPath[playerPath.length - 1];
 
-    const enemyOnTargetSquare =
-      targetSquare.player !== player && targetSquare.value > 0;
+    console.log("PlayerPath", playerPath);
+    console.log("SourceSquare", sourceSquare);
+    console.log("sourceIndex", sourceIndex);
+    console.log("Target", targetSquare);
+    console.log("Enemy", enemyPath);
+    console.log("Enemy", enemyFirstSquare);
+    console.log("STATE", state);
 
-    if (enemyOnTargetSquare) {
-      // TODO: Handle multiple peons on single square
-      const enemyFirstSquare = store.getPlayerPath(store.nextPlayer(player))[0];
-      enemyFirstSquare.value += targetSquare.value;
-      targetSquare.player = null;
-      targetSquare.value = 0;
+    if (targetSquare.player === store.nextPlayer()) {
+      enemyFirstSquare.value += 1;
     }
 
     sourceSquare.value -= 1;
-    targetSquare.player = player;
     targetSquare.value += 1;
+    targetSquare.player = player;
 
     if (sourceSquare.value === 0) {
       sourceSquare.player = null;
     }
 
+    if (targetSquare.uid === playerLastSquare.uid) {
+      targetSquare.player = null;
+    }
+
     sourceSquare.update();
     targetSquare.update();
+    enemyFirstSquare.update();
 
     return targetSquare;
   };
@@ -261,6 +305,8 @@ class Board extends React.Component {
   koniec_gry = () => {
     console.log(`koniec gry; FUNKCJA, KONIEC GRY`);
     alert("PRZESZEDŁEŚ CAŁA GRĘ!! GRATULUJĘ!!");
+    this.store = MakeDefaultsStore();
+    this.setState({ renderSquares: this.store.renderSquares() });
   };
 
   handleClick = square => {
