@@ -122,8 +122,9 @@ function MakeDefaultsStore() {
       return this._render
         .map(kolumna => kolumna.map(uid => this._base[uid]))
         .flat();
-    }
-  };
+    },
+  
+  }
   store.receipt = null;
   return store;
 }
@@ -136,7 +137,8 @@ function MakeDefaultsStore() {
 ///
 
 class Board extends React.Component {
-  store = MakeDefaultsStore();
+  
+  store =  MakeDefaultsStore()
   state = {
     renderSquares: this.store.renderSquares()
   };
@@ -187,6 +189,7 @@ class Board extends React.Component {
 
     this.koniec_gry(player);
     console.log(`Gra się zakończyła, wygrał player: `, player);
+    console.log(this.state.renderSquares)
   };
 
   rzucamy_kostką = () => {
@@ -303,10 +306,24 @@ class Board extends React.Component {
   };
 
   koniec_gry = () => {
+    const squares = this.state.renderSquares
+
+    for (const square of squares) {
+      square.value = 0;
+      square.player = null;
+      square.aktywny = false      
+    }
+    squares[0].player = "dawid";
+    squares[5].player = "damian";
+    squares[0].value = 2;
+    squares[5].value = 2;
+
+    this.setState({renderSquares: squares})
     console.log(`koniec gry; FUNKCJA, KONIEC GRY`);
     alert("PRZESZEDŁEŚ CAŁA GRĘ!! GRATULUJĘ!!");
-    this.store = MakeDefaultsStore();
-    this.setState({ renderSquares: this.store.renderSquares() });
+
+    
+    
   };
 
   handleClick = square => {
@@ -339,3 +356,5 @@ class Board extends React.Component {
 }
 
 export default Board;
+
+
