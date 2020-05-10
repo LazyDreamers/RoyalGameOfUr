@@ -194,6 +194,9 @@ class Board extends React.Component {
 
   czekaj_na_wskazanie_pola = async pola => {
     console.log(`czekaj_na_wskazanie_pola: AKTYWACJA: `, pola);
+  
+
+
 
     for (const square of pola) {
       square.aktywny = true;
@@ -201,7 +204,6 @@ class Board extends React.Component {
     }
 
     const pole = await new Promise((resolve, reject) => {
-      console.log(`włąśnie zrobił się nowy PROMISE`, this.receipt);
       this.receipt = { resolve, reject };
     });
 
@@ -239,6 +241,9 @@ class Board extends React.Component {
     if (sourceSquare.value === 0) {
       sourceSquare.player = null;
     }
+
+    sourceSquare.update();
+    targetSquare.update();
 
     return targetSquare;
   };
