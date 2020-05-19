@@ -1,0 +1,30 @@
+.gameInfo {
+    text-align: center;
+}
+
+.buttonActive {
+    text-align: left;
+    padding: 10px;
+    margin-right: 40px;
+    pointer-events: all;
+    background-color: lime;
+}
+
+.buttonInactive {
+    text-align: left;
+    padding: 10px;
+    margin-right: 40px;
+    pointer-events: none;
+}
+
+.infobox {
+    font-size: 16px;
+
+    display: inline-block;
+    padding: 15px;
+}
+.infoValue {
+    height: 45px;
+    font-weight: 700;
+    font-size: 20px;
+}

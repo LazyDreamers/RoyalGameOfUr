@@ -1,6 +1,7 @@
 import React from "react";
 import "./styles.scss";
-import Board from "./game/Board";
+// import Board from "./game/Board";
+import GAME from "./game_2/game";
 
 // var player = 1;
 
@@ -12,7 +13,8 @@ import Board from "./game/Board";
 const App = () => (
   <>
     <div>
-      <Board />
+      {/* <Board /> */}
+      <GAME />
     </div>
   </>
 );

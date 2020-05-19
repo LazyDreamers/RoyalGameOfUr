@@ -1,0 +1,27 @@
+.body {
+    color: brown;
+    height: 50px;
+    width: 60px;
+   /* display: block; */
+  }
+  
+  .bodyInactive {
+    color: brown;
+    height: 50px;
+    width: 60px;
+    /* display: inline-block; */
+    pointer-events: none;
+  }
+  
+  .bodyActive {
+    background-color: lime;
+    color: brown;
+    height: 50px;
+    width: 60px;
+     /* display: inline-block; */
+    pointer-events: all;
+    animation: wobble 0.5s infinite;
+    animation-direction: alternate-reverse;
+    animation-timing-function: ease-in-out;
+  }
+  
