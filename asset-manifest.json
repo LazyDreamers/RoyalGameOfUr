@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/RoyalGameOfUr/static/css/main.029321ed.chunk.css",
-    "main.js": "/RoyalGameOfUr/static/js/main.fba26bf2.chunk.js",
-    "main.js.map": "/RoyalGameOfUr/static/js/main.fba26bf2.chunk.js.map",
+    "main.css": "/RoyalGameOfUr/static/css/main.22925cbb.chunk.css",
+    "main.js": "/RoyalGameOfUr/static/js/main.3db089d2.chunk.js",
+    "main.js.map": "/RoyalGameOfUr/static/js/main.3db089d2.chunk.js.map",
     "runtime-main.js": "/RoyalGameOfUr/static/js/runtime-main.808d31be.js",
     "runtime-main.js.map": "/RoyalGameOfUr/static/js/runtime-main.808d31be.js.map",
-    "static/js/2.f43c8577.chunk.js": "/RoyalGameOfUr/static/js/2.f43c8577.chunk.js",
-    "static/js/2.f43c8577.chunk.js.map": "/RoyalGameOfUr/static/js/2.f43c8577.chunk.js.map",
+    "static/js/2.2b737ade.chunk.js": "/RoyalGameOfUr/static/js/2.2b737ade.chunk.js",
+    "static/js/2.2b737ade.chunk.js.map": "/RoyalGameOfUr/static/js/2.2b737ade.chunk.js.map",
     "index.html": "/RoyalGameOfUr/index.html",
-    "precache-manifest.995f64755ec96b698527a9cee86c1390.js": "/RoyalGameOfUr/precache-manifest.995f64755ec96b698527a9cee86c1390.js",
+    "precache-manifest.7b180c56401dd9ea302e6e7c91468599.js": "/RoyalGameOfUr/precache-manifest.7b180c56401dd9ea302e6e7c91468599.js",
     "service-worker.js": "/RoyalGameOfUr/service-worker.js",
-    "static/css/main.029321ed.chunk.css.map": "/RoyalGameOfUr/static/css/main.029321ed.chunk.css.map",
-    "static/js/2.f43c8577.chunk.js.LICENSE.txt": "/RoyalGameOfUr/static/js/2.f43c8577.chunk.js.LICENSE.txt"
+    "static/css/main.22925cbb.chunk.css.map": "/RoyalGameOfUr/static/css/main.22925cbb.chunk.css.map",
+    "static/js/2.2b737ade.chunk.js.LICENSE.txt": "/RoyalGameOfUr/static/js/2.2b737ade.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.808d31be.js",
-    "static/js/2.f43c8577.chunk.js",
-    "static/css/main.029321ed.chunk.css",
-    "static/js/main.fba26bf2.chunk.js"
+    "static/js/2.2b737ade.chunk.js",
+    "static/css/main.22925cbb.chunk.css",
+    "static/js/main.3db089d2.chunk.js"
   ]
 }
