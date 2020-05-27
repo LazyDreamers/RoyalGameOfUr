@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/RoyalGameOfUr/precache-manifest.7b180c56401dd9ea302e6e7c91468599.js"
+  "/RoyalGameOfUr/precache-manifest.3eec6b7300aafa14bb18fe444668909b.js"
 );
 
 self.addEventListener('message', (event) => {
