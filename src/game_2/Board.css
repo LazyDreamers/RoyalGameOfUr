@@ -2,7 +2,7 @@
 
     display: grid;
     justify-content: center;
-    grid-template-columns: 60px 60px 60px 60px 60px;
+    grid-template-columns: 60px 60px 60px 60px 60px 60px 60px 60px;
     grid-gap: 5px;    
     padding: 10px;
   }
